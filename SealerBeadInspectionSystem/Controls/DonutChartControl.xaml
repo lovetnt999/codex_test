@@ -1,0 +1,35 @@
+<UserControl x:Class="SealerBeadInspectionSystem.Controls.DonutChartControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:SealerBeadInspectionSystem.Controls"
+             MinWidth="180"
+             MinHeight="180">
+    <Grid>
+        <Ellipse Stroke="{StaticResource PanelBorderBrush}"
+                 StrokeThickness="18"
+                 Fill="Transparent" />
+        <Path x:Name="OkArc"
+              Stroke="{StaticResource AccentGreenBrush}"
+              StrokeThickness="18"
+              StrokeStartLineCap="Round"
+              StrokeEndLineCap="Round"
+              Fill="Transparent" />
+        <Path x:Name="NgArc"
+              Stroke="{StaticResource AccentRedBrush}"
+              StrokeThickness="18"
+              StrokeStartLineCap="Round"
+              StrokeEndLineCap="Round"
+              Fill="Transparent" />
+        <Border Background="{StaticResource PanelDarkerBrush}"
+                CornerRadius="999">
+            <Viewbox Stretch="Uniform">
+                <TextBlock Text="{Binding TotalCount, RelativeSource={RelativeSource AncestorType=local:DonutChartControl}}"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="36" />
+            </Viewbox>
+        </Border>
+    </Grid>
+</UserControl>
