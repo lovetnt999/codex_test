@@ -1,0 +1,294 @@
+<Window x:Class="SealerBeadInspectionSystem.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:SealerBeadInspectionSystem.Controls"
+        xmlns:vm="clr-namespace:SealerBeadInspectionSystem.ViewModels"
+        Title="Sealer Bead Inspection System"
+        Width="1366"
+        Height="768"
+        MinWidth="1280"
+        MinHeight="720"
+        Background="{StaticResource WindowBackground}"
+        FontFamily="{StaticResource AppFontFamily}">
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <Style x:Key="IndicatorStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="Padding" Value="6,2" />
+            <Setter Property="Margin" Value="2,0" />
+            <Setter Property="Background" Value="{StaticResource PanelBorderBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource PanelBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style x:Key="IndicatorTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style x:Key="IconButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="28" />
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Margin" Value="4,0" />
+            <Setter Property="Background" Value="{StaticResource PanelBorderBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="14">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PanelBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource PanelBrush}" />
+            <Setter Property="CornerRadius" Value="{StaticResource PanelCornerRadius}" />
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="Effect" Value="{StaticResource SoftShadow}" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="16" RowDefinitions="Auto,*,*">
+        <Border Style="{StaticResource PanelBorderStyle}" Padding="12" Margin="0,0,0,12">
+            <Grid ColumnDefinitions="*,Auto,Auto">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="36" Height="36" Background="{StaticResource PanelBorderBrush}" CornerRadius="6">
+                        <TextBlock Text="SB"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   FontWeight="Bold" />
+                    </Border>
+                    <TextBlock Text="{Binding Title}"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               FontSize="22"
+                               FontWeight="Bold"
+                               Margin="12,0,8,0"
+                               VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding Version}"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               FontSize="12"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0">
+                    <StackPanel>
+                        <TextBlock Text="Input" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="0,0,0,4" />
+                        <ItemsControl ItemsSource="{Binding InputIndicators}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource IndicatorStyle}">
+                                        <Border.Style>
+                                            <Style TargetType="Border" BasedOn="{StaticResource IndicatorStyle}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource AccentGreenBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="{Binding Label}" Style="{StaticResource IndicatorTextStyle}" />
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+
+                    <StackPanel Margin="16,0,0,0">
+                        <TextBlock Text="Output" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="0,0,0,4" />
+                        <ItemsControl ItemsSource="{Binding OutputIndicators}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource IndicatorStyle}">
+                                        <Border.Style>
+                                            <Style TargetType="Border" BasedOn="{StaticResource IndicatorStyle}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource AccentGreenBrush}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Label}" Value="NG">
+                                                        <Setter Property="Background" Value="{StaticResource PanelBorderBrush}" />
+                                                        <Setter Property="BorderBrush" Value="{StaticResource AccentRedBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="{Binding Label}" Style="{StaticResource IndicatorTextStyle}" />
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Style="{StaticResource IconButtonStyle}" Command="{Binding HeaderIconCommand}">
+                        <TextBlock Text="●" FontSize="12" />
+                    </Button>
+                    <Button Style="{StaticResource IconButtonStyle}" Command="{Binding HeaderIconCommand}">
+                        <TextBlock Text="⋯" FontSize="14" />
+                    </Button>
+                    <Button Style="{StaticResource IconButtonStyle}" Command="{Binding HeaderIconCommand}" Background="{StaticResource AccentRedBrush}">
+                        <TextBlock Text="✕" FontSize="12" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" ColumnDefinitions="0.35*,0.25*,0.4*" Margin="0,0,0,12">
+            <Border Style="{StaticResource PanelBorderStyle}" Margin="0,0,12,0">
+                <Grid RowDefinitions="Auto,Auto,*" ColumnDefinitions="*,Auto">
+                    <TextBlock Text="세부정보"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               FontSize="18"
+                               FontWeight="SemiBold" />
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding CurrentDateTime}"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               FontSize="12"
+                               VerticalAlignment="Center" />
+                    <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,16,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="제품" Foreground="{StaticResource AccentTealBrush}" FontSize="16" FontWeight="SemiBold" />
+                        <TextBlock Grid.Column="1" Text="{Binding ProductName}" Foreground="{StaticResource TextPrimaryBrush}" FontSize="18" />
+
+                        <TextBlock Grid.Row="1" Text="설비" Foreground="{StaticResource AccentTealBrush}" FontSize="16" FontWeight="SemiBold" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding EquipmentId}" Foreground="{StaticResource TextPrimaryBrush}" FontSize="18" />
+
+                        <TextBlock Grid.Row="2" Text="진행률" Foreground="{StaticResource AccentTealBrush}" FontSize="16" FontWeight="SemiBold" />
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding ProgressText}" Foreground="{StaticResource TextPrimaryBrush}" FontSize="18" />
+
+                        <TextBlock Grid.Row="3" Text="실러폭" Foreground="{StaticResource AccentTealBrush}" FontSize="16" FontWeight="SemiBold" />
+                        <TextBlock Grid.Row="3" Grid.Column="1" FontSize="18">
+                            <Run Text="{Binding SealerWidthValue}" Foreground="{StaticResource AccentGreenBrush}" FontWeight="SemiBold" />
+                            <Run Text=" " />
+                            <Run Text="{Binding SealerWidthStandard}" Foreground="{StaticResource TextSecondaryBrush}" />
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="4" Text="Score" Foreground="{StaticResource AccentTealBrush}" FontSize="16" FontWeight="SemiBold" />
+                        <TextBlock Grid.Row="4" Grid.Column="1" FontSize="18">
+                            <Run Text="{Binding ScoreValue}" Foreground="{StaticResource AccentGreenBrush}" FontWeight="SemiBold" />
+                            <Run Text=" " />
+                            <Run Text="{Binding ScoreStandard}" Foreground="{StaticResource TextSecondaryBrush}" />
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="5" Text="단락" Foreground="{StaticResource AccentTealBrush}" FontSize="16" FontWeight="SemiBold" />
+                        <TextBlock Grid.Row="5" Grid.Column="1" FontSize="18">
+                            <Run Text="{Binding SectionValue}" Foreground="{StaticResource AccentGreenBrush}" FontWeight="SemiBold" />
+                            <Run Text=" " />
+                            <Run Text="{Binding SectionStandard}" Foreground="{StaticResource TextSecondaryBrush}" />
+                        </TextBlock>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource PanelBorderStyle}" Margin="0,0,12,0">
+                <Grid RowDefinitions="Auto,*" ColumnDefinitions="*,Auto">
+                    <TextBlock Text="생산현황"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               FontSize="18"
+                               FontWeight="SemiBold" />
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                        <TextBlock FontSize="14">
+                            <Run Text="OK " Foreground="{StaticResource AccentGreenBrush}" FontWeight="SemiBold" />
+                            <Run Text="{Binding OkCount, StringFormat={}{0:000000}}" Foreground="{StaticResource TextSecondaryBrush}" />
+                        </TextBlock>
+                        <TextBlock FontSize="14">
+                            <Run Text="NG " Foreground="{StaticResource AccentRedBrush}" FontWeight="SemiBold" />
+                            <Run Text="{Binding NgCount, StringFormat={}{0:000000}}" Foreground="{StaticResource TextSecondaryBrush}" />
+                        </TextBlock>
+                    </StackPanel>
+
+                    <Grid Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <controls:DonutChartControl Width="200"
+                                                    Height="200"
+                                                    OkCount="{Binding OkCount}"
+                                                    NgCount="{Binding NgCount}"
+                                                    TotalCount="{Binding TotalCount}" />
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Column="2" RowDefinitions="Auto,*">
+                <Border Style="{StaticResource PanelBorderStyle}" Background="{StaticResource AccentGreenDarkBrush}" Padding="0" Margin="0,0,0,12">
+                    <Border CornerRadius="80" Background="{StaticResource AccentGreenDarkBrush}" Height="130">
+                        <TextBlock Text="OK"
+                                   FontSize="86"
+                                   FontWeight="Bold"
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Border>
+                </Border>
+
+                <Border Grid.Row="1" Style="{StaticResource PanelBorderStyle}">
+                    <Grid RowDefinitions="Auto,*">
+                        <TextBlock Text="시스템 로그"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   FontSize="18"
+                                   FontWeight="SemiBold" />
+                        <ScrollViewer Grid.Row="1" Margin="0,12,0,0" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding SystemLogs}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" Foreground="{StaticResource TextSecondaryBrush}" FontFamily="Consolas" FontSize="12" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="2" ColumnDefinitions="*,*">
+            <controls:CameraPanelControl Title="Camera 1"
+                                          FrameBrush="{StaticResource AccentGreenBrush}"
+                                          CaptionPrefix="{Binding Camera1CaptionPrefix}"
+                                          ValueText="{Binding Camera1WidthValue}"
+                                          ScoreText="{Binding Camera1ScoreValue}"
+                                          ValueBrush="{StaticResource AccentGreenBrush}"
+                                          ShowRoi="True"
+                                          RoiLeft="780"
+                                          RoiTop="500"
+                                          RoiWidth="600"
+                                          RoiHeight="320" />
+            <controls:CameraPanelControl Grid.Column="1"
+                                          Margin="16,0,0,0"
+                                          Title="Camera 2"
+                                          FrameBrush="{StaticResource AccentRedBrush}"
+                                          CaptionPrefix="{Binding Camera2CaptionPrefix}"
+                                          ValueText="{Binding Camera2WidthValue}"
+                                          ScoreText="{Binding Camera2ScoreValue}"
+                                          ValueBrush="{StaticResource AccentRedBrush}"
+                                          ShowRoi="False" />
+        </Grid>
+    </Grid>
+</Window>
