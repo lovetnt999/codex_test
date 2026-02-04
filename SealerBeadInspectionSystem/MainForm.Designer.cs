@@ -25,6 +25,10 @@ namespace SealerBeadInspectionSystem
         private Panel logPanel;
         private Label logHeaderLabel;
         private TextBox logTextBox;
+        private Panel okStatusPanel;
+        private Label okStatusLabel;
+        private Label okCountLabel;
+        private Label ngCountLabel;
         private Panel inspectionPanel;
         private Label inspectionLabel;
         private TableLayoutPanel cameraLayout;
@@ -59,6 +63,10 @@ namespace SealerBeadInspectionSystem
             logPanel = new Panel();
             logHeaderLabel = new Label();
             logTextBox = new TextBox();
+            okStatusPanel = new Panel();
+            okStatusLabel = new Label();
+            okCountLabel = new Label();
+            ngCountLabel = new Label();
             inspectionPanel = new Panel();
             inspectionLabel = new Label();
             cameraLayout = new TableLayoutPanel();
@@ -146,7 +154,7 @@ namespace SealerBeadInspectionSystem
             rootLayout.Controls.Add(summaryPanel, 0, 1);
 
             infoPanel.BackColor = Color.FromArgb(28, 30, 35);
-            infoPanel.Size = new Size(340, 240);
+            infoPanel.Size = new Size(360, 240);
             infoPanel.Location = new Point(16, 12);
             infoPanel.Padding = new Padding(16, 12, 16, 12);
             summaryPanel.Controls.Add(infoPanel);
@@ -157,7 +165,7 @@ namespace SealerBeadInspectionSystem
             infoHeaderLabel.AutoSize = true;
             infoPanel.Controls.Add(infoHeaderLabel);
 
-            infoDetailsLabel.Text = "제품\n  Side OTR LHD\n\n설비\n  R12\n\n진행률\n  34.5% (353EA)\n\n실러폭\n  5.43mm (기준: 3~8mm)\n\nScore\n  96.5% (기준: 93.5% ↑)\n\n단락\n  None (기준: None)";
+            infoDetailsLabel.Text = "제품\n  Side OTR LHD\n\n설비\n  R12\n\n진행률\n  100.0% (1025EA)\n\n실러폭\n  5.43mm (기준: 3~8mm)\n\nScore\n  96.5% (기준: 93.5% ↑)\n\n단락\n  None (기준: None)";
             infoDetailsLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
             infoDetailsLabel.ForeColor = Color.WhiteSmoke;
             infoDetailsLabel.AutoSize = true;
@@ -165,8 +173,8 @@ namespace SealerBeadInspectionSystem
             infoPanel.Controls.Add(infoDetailsLabel);
 
             donutPanel.BackColor = Color.FromArgb(28, 30, 35);
-            donutPanel.Size = new Size(340, 240);
-            donutPanel.Location = new Point(372, 12);
+            donutPanel.Size = new Size(320, 240);
+            donutPanel.Location = new Point(388, 12);
             donutPanel.Padding = new Padding(16, 12, 16, 12);
             summaryPanel.Controls.Add(donutPanel);
 
@@ -177,7 +185,7 @@ namespace SealerBeadInspectionSystem
             donutPanel.Controls.Add(donutTitleLabel);
 
             donutCircle.Size = new Size(160, 160);
-            donutCircle.Location = new Point(90, 50);
+            donutCircle.Location = new Point(80, 50);
             donutCircle.BackColor = Color.FromArgb(0, 162, 86);
             donutCircle.Paint += (sender, args) =>
             {
@@ -198,12 +206,26 @@ namespace SealerBeadInspectionSystem
             donutCenterLabel.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             donutCenterLabel.ForeColor = Color.White;
             donutCenterLabel.AutoSize = true;
-            donutCenterLabel.Location = new Point(120, 112);
+            donutCenterLabel.Location = new Point(110, 112);
             donutPanel.Controls.Add(donutCenterLabel);
 
+            okCountLabel.Text = "OK  001495";
+            okCountLabel.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            okCountLabel.ForeColor = Color.FromArgb(67, 205, 107);
+            okCountLabel.AutoSize = true;
+            okCountLabel.Location = new Point(200, 28);
+            donutPanel.Controls.Add(okCountLabel);
+
+            ngCountLabel.Text = "NG  000005";
+            ngCountLabel.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            ngCountLabel.ForeColor = Color.FromArgb(234, 62, 62);
+            ngCountLabel.AutoSize = true;
+            ngCountLabel.Location = new Point(200, 48);
+            donutPanel.Controls.Add(ngCountLabel);
+
             logPanel.BackColor = Color.FromArgb(28, 30, 35);
-            logPanel.Size = new Size(420, 240);
-            logPanel.Location = new Point(728, 12);
+            logPanel.Size = new Size(360, 140);
+            logPanel.Location = new Point(1004, 110);
             logPanel.Padding = new Padding(16, 12, 16, 12);
             summaryPanel.Controls.Add(logPanel);
 
@@ -221,7 +243,7 @@ namespace SealerBeadInspectionSystem
             logTextBox.ForeColor = Color.Gainsboro;
             logTextBox.Font = new Font("Consolas", 9F, FontStyle.Regular);
             logTextBox.Location = new Point(0, 28);
-            logTextBox.Size = new Size(400, 190);
+            logTextBox.Size = new Size(340, 95);
             logTextBox.Text = "[2026-01-13 09:00:01] [SYSTEM] Application Started Successfully.\r\n" +
                               "[2026-01-13 09:00:05] [CONFIG] Loading Config: SIDE OTR LHD (R12).\r\n" +
                               "[2026-01-13 09:00:09] [PLC] Communication Link Established (TCP/IP).\r\n" +
@@ -231,6 +253,20 @@ namespace SealerBeadInspectionSystem
                               "[2026-01-13 09:05:21] [INSPECT] Result: OK (Width: 5.45mm, Score: 95%).\r\n" +
                               "[2026-01-13 09:05:26] [PLC] Sent Final Judgement: OK (Code: 1).";
             logPanel.Controls.Add(logTextBox);
+
+            okStatusPanel.BackColor = Color.FromArgb(39, 119, 48);
+            okStatusPanel.Size = new Size(360, 80);
+            okStatusPanel.Location = new Point(1004, 12);
+            okStatusPanel.Padding = new Padding(8);
+            okStatusPanel.BorderStyle = BorderStyle.None;
+            summaryPanel.Controls.Add(okStatusPanel);
+
+            okStatusLabel.Text = "OK";
+            okStatusLabel.Font = new Font("Segoe UI", 30F, FontStyle.Bold);
+            okStatusLabel.ForeColor = Color.White;
+            okStatusLabel.Dock = DockStyle.Fill;
+            okStatusLabel.TextAlign = ContentAlignment.MiddleCenter;
+            okStatusPanel.Controls.Add(okStatusLabel);
 
             inspectionPanel.Dock = DockStyle.Fill;
             inspectionPanel.Padding = new Padding(16, 8, 16, 12);
@@ -244,6 +280,7 @@ namespace SealerBeadInspectionSystem
             inspectionLabel.TextAlign = ContentAlignment.MiddleCenter;
             inspectionLabel.Size = new Size(380, 64);
             inspectionLabel.Location = new Point(740, 10);
+            inspectionLabel.Visible = false;
             inspectionPanel.Controls.Add(inspectionLabel);
 
             cameraLayout.Dock = DockStyle.Bottom;
